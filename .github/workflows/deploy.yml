@@ -24,6 +24,8 @@ jobs:
       - name: Build project
         run: npm run build
         
-      - name: Deploy
-        run: |
-          # deployment steps
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: main
+          folder: build
