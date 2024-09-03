@@ -53,6 +53,7 @@ jobs:
             # If you're using a web server or process manager, restart it
             # Example with PM2
             pm2 reload node-js
+            pm2 status
 
             #  Example with systemd
             # sudo systemctl restart your-app-service
