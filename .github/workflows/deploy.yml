@@ -50,9 +50,16 @@ jobs:
           ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
             cd /home/ubuntu/Portfolio
 
+            git pull origin main
+
+            # Install dependencies and build if necessary
+            npm install
+            npm run build
+
             # If you're using a web server or process manager, restart it
             # Example with PM2
             pm2 reload node-js
+            pm2 save
             pm2 status
 
             #  Example with systemd
