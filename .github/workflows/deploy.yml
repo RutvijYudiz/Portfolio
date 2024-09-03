@@ -34,17 +34,35 @@ jobs:
       - name: Clean up temporary files
         run: find ./build -name '*.sw?' -delete
        
+      - name: Deploy to EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          EC2_USER: ubuntu
+          EC2_HOST: ${{ secrets.EC2_HOST }} 
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-       
-       
-       # uses: JamesIves/github-pages-deploy-action@4.1.0
-       # with:
-       #   branch: gh-pages
-       #   folder: build
+          # Upload build directory to EC2
+          scp -i private_key.pem -o StrictHostKeyChecking=no -r ./build $EC2_USER@$EC2_HOST:/home/ubuntu/Portfolio/build
+
+          # Connect to EC2 and restart the service
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+            cd /home/ubuntu/Portfolio
+
+            # If you're using a web server or process manager, restart it
+            # Example with PM2
+            pm2 restart all
+
+            #  Example with systemd
+            # sudo systemctl restart your-app-service
+
+            # Clean up old builds if necessary
+            # rm -rf old-build-directory
+          EOF
+
+          # Clean up private key
+          rm private_key.pem    
+         
 
 
