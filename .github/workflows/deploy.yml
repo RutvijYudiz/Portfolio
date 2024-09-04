@@ -43,10 +43,7 @@ jobs:
             # Install dependencies and build if necessary
             npm install
             npm run build
-
-            # Restart service using systemd
-            #sudo systemctl restart portfolio-app.service
-
+            
             # Optionally, check the status of the service
             sudo systemctl status portfolio-app.service
 
