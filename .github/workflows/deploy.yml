@@ -45,10 +45,11 @@ jobs:
             npm run build
 
             # Restart service using systemd
-            sudo systemctl restart portfolio-app.service
+            sudo systemctl restart portfolio-app.service || { echo 'Failed to restart service'; exit 1; }
 
             # Optionally, check the status of the service
-            sudo systemctl status portfolio-app.service
+            sudo systemctl status portfolio-app.service || { echo 'Failed to get service status'; exit 1; }
+
 
             # Clean up old builds if necessary
             # rm -rf old-build-directory
