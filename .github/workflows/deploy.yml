@@ -44,7 +44,7 @@ jobs:
           chmod 600 private_key.pem
 
           # Upload build directory to EC2
-          scp -i private_key.pem -o StrictHostKeyChecking=no -r ./build $EC2_USER@$EC2_HOST:/home/ubuntu/Portfolio/build
+          #scp -i private_key.pem -o StrictHostKeyChecking=no -r ./build $EC2_USER@$EC2_HOST:/home/ubuntu/Portfolio/build
 
           # Connect to EC2 and restart the service
           ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
